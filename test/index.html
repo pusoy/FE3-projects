@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script type="text/javascript" src="dist/$.js"></script>
+</head>
+<body>
+<button id="remove1" class="butt">Button 1</button>
+<button id="remove2" class="butt">Button 2</button> 
+<button id="remove3" class="butt">Button 3</button> 
+<script type="text/javascript">
+	pusoy('.butt').on('click', function (event) {    
+	    // OR
+	    var id = this.id;  
+	    if (id == 'remove1') { 
+	    	pusoy('#remove2').style.display = "none";
+	    	pusoy('#remove3').style.display = "none";
+	    }
+	    else if (id == 'remove2'){ 
+	    	pusoy('#remove1').style.display = "none";
+	    	pusoy('#remove3').style.display = "none";
+	    }
+	    else { 
+	    	pusoy('#remove1').style.display = "none";
+	    	pusoy('#remove2').style.display = "none";
+	    }
+	}); 
+</script>
+</body>
+</html>
