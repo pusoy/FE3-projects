@@ -1,0 +1,140 @@
+ <!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script type="text/javascript">
+
+nice = (function (document, window, nice) {   
+  var node = Node.prototype,
+      nodeList = NodeList.prototype,
+      forEach = 'forEach',
+      trigger = 'trigger',
+      each = [][forEach], 
+      dummy = document.createElement('i');
+
+  nodeList[forEach] = each;
+ 
+  window.on = node.on = function (event, fn) {
+    this.addEventListener(event, fn, false);
+ 
+    return this;
+  };
+
+  nodeList.on = function (event, fn) {
+    this[forEach](function (el) {
+      el.on(event, fn);
+    });
+    return this;
+  };
+ 
+  window[trigger] = node[trigger] = function (type, data) { 
+    var event = document.createEvent('HTMLEvents');
+    event.initEvent(type, true, true);
+    event.data = data || {};
+    event.eventName = type;
+    event.target = this;
+    this.dispatchEvent(event);
+    return this;
+  };
+
+  nodeList[trigger] = function (event) {
+    this[forEach](function (el) {
+      el[trigger](event);
+    });
+    return this;
+  };
+
+  nice = function (s) { 
+    var r = document.querySelectorAll(s || '?'),
+        length = r.length; 
+    return length == 1 ? r[0] : r;
+  };
+ 
+  nice.on = node.on.bind(dummy);
+  nice[trigger] = node[trigger].bind(dummy);
+
+  return nice;
+})(document, this);
+</script>
+</head>
+<body onload="hide()">
+<div id="hello">
+<input type="button" id="igsoon" class="pamilee" value="Hide Siblings">
+<div id="container">
+  siblings:<br>
+  <input class="siblings" placeholder="Sibling 1"/><br>
+  <input class="siblings" placeholder="Sibling 2"/><br>
+  <input class="siblings" placeholder="Sibling 3"/><br/> 
+    </div>
+    <div id="container1">
+      <input id="plus" type="button" value="+">
+    <input id="ok"   type="button" value="ok">
+    </div>
+    <div id="container2">
+<input type="button" id="gaw" class="pamilee" value="Show Siblings">
+ <br> Cousins:<br>
+  <input class="cousins" placeholder="cousin 1"/><br>
+  <input class="cousins" placeholder="cousin 2"/><br>
+  <input class="cousins" placeholder="cousins 3"/><br/> 
+    </div>
+<script type="text/javascript">
+   
+
+  nice("#plus").addEventListener("click",function(){
+
+    var container=nice('#container');
+    var siblings= nice('.siblings');
+    var count = siblings.length+1;
+    var newNode = document.createElement("input"); 
+    newNode.classList.add("siblings");
+    newNode.placeholder = "siblings" + count;
+
+    container.appendChild(newNode);
+
+  });
+ 
+  nice("#ok").addEventListener("click",function(){
+var siblings = nice('.siblings');
+    var wew=0;
+    var res="";
+    var data="{";
+    while(siblings.length>wew){
+     data+= '"Siblings #'+ (wew+1) +'": "'+siblings[wew].value+'",';
+      wew++; 
+    }
+ data+="}";
+
+ var po= data.slice(0,-2)+"}"
+ //console.log(po);
+ // var hello={po};
+ var kk= JSON.parse(po);
+        console.log(kk);
+          }
+          )
+
+nice("#igsoon").addEventListener("click", function(){
+nice("#container2").style.display;
+  nice("#container").style.display = "none";  
+  nice("#container1").style.display = "none";  
+    nice("#igsoon").style.display = "none";   
+nice("#container2").style.display="block";
+})
+function hide() {
+  nice("#container2").style.display="none";
+}
+
+// nice("#gaw").addEventListener("click", function(){
+// nice("#container2").style.display="none";
+// nice("#container1").style.display = "block";
+// nice("#container").style.display = "block";
+// nice("#igsoon").style.display = "block";
+
+// })
+// var container2=nice("#container2");
+// container2.addEventListener("onload",function(){
+//   nice("#container2").style.display="none";
+// }) 
+
+  </script> 
+</body>
+</html>
